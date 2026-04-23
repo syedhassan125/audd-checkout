@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUDD Checkout SDK — Demo</title>
+  <script src="../src/widget.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #060d1a;
+      --surface: #0f1e35;
+      --border: #1a3050;
+      --accent: #0ea5e9;
+      --accent2: #38bdf8;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --green: #4ade80;
+      --card-bg: #0b1829;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,13,26,0.9);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 700; color: #fff;
+    }
+    .nav-logo .badge {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #fff; font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px; letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 14px;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14,165,233,0.12), transparent);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.25);
+      color: var(--accent2); font-size: 12px; font-weight: 600;
+      padding: 5px 14px; border-radius: 20px; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px); font-weight: 800;
+      line-height: 1.1; color: #fff; margin-bottom: 20px;
+    }
+    .hero h1 span { color: var(--accent2); }
+    .hero p {
+      font-size: 18px; color: var(--muted); max-width: 560px;
+      margin: 0 auto 40px; line-height: 1.6;
+    }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #fff; border: none; padding: 14px 28px;
+      border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); padding: 14px 28px;
+      border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: border-color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); }
+
+    /* STATS */
+    .stats {
+      display: flex; justify-content: center; gap: 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .stat {
+      padding: 24px 48px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat .val { font-size: 28px; font-weight: 800; color: var(--accent2); }
+    .stat .key { font-size: 12px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* DEMO SECTION */
+    .section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent); margin-bottom: 12px;
+    }
+    .section-title { font-size: 32px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .section-sub { font-size: 16px; color: var(--muted); margin-bottom: 48px; }
+
+    /* PRODUCT CARDS */
+    .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .product-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .product-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .product-img {
+      width: 100%; height: 180px; object-fit: cover;
+      background: linear-gradient(135deg, #0f2a45, #1a3a5c);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+    }
+    .product-body { padding: 20px; }
+    .product-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .product-desc { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .product-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .product-price { font-size: 20px; font-weight: 800; color: var(--accent2); }
+    .product-price span { font-size: 12px; color: var(--muted); font-weight: 400; }
+    .buy-btn {
+      background: var(--accent); color: #fff; border: none;
+      padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .buy-btn:hover { background: var(--accent2); }
+
+    /* CODE SECTION */
+    .code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    @media (max-width: 768px) { .code-grid { grid-template-columns: 1fr; } }
+    .code-block {
+      background: #020812; border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: #0a1525; border-bottom: 1px solid var(--border);
+    }
+    .code-header .filename { font-size: 12px; color: var(--muted); font-family: 'SF Mono', monospace; }
+    .code-dots { display: flex; gap: 6px; }
+    .code-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .code-dots span:nth-child(1) { background: #ff5f57; }
+    .code-dots span:nth-child(2) { background: #febc2e; }
+    .code-dots span:nth-child(3) { background: #28c840; }
+    pre {
+      padding: 20px; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px; line-height: 1.7; overflow-x: auto;
+      color: #94a3b8;
+    }
+    .kw { color: #7c3aed; }
+    .fn { color: #38bdf8; }
+    .str { color: #4ade80; }
+    .cm { color: #475569; font-style: italic; }
+    .num { color: #fb923c; }
+
+    /* FEATURES */
+    .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+    .feature {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px;
+    }
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+    .feature h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .feature p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* HOW IT WORKS */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(14,165,233,0.1); border: 1px solid rgba(14,165,233,0.3);
+      color: var(--accent2); font-size: 16px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step-body h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .step-body p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* TOAST */
+    #toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: #14532d; color: #4ade80; padding: 12px 24px;
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 99998;
+      transition: transform 0.3s ease; pointer-events: none;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    footer {
+      text-align: center; padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <circle cx="14" cy="14" r="14" fill="#0284c7"/>
+      <text x="14" y="19" text-anchor="middle" fill="white" font-size="12" font-weight="bold" font-family="sans-serif">A$</text>
+    </svg>
+    AUDD Checkout
+    <span class="badge">SDK</span>
+  </div>
+  <div class="nav-links">
+    <a href="#demo">Demo</a>
+    <a href="#integration">Integration</a>
+    <a href="#features">Features</a>
+    <a href="https://audd.digital" target="_blank">AUDD →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">
+    <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="#22d3ee"/></svg>
+    Built on Solana Pay · Powered by AUDD
+  </div>
+  <h1>Accept <span>Australian Dollar</span><br/>Payments On-Chain</h1>
+  <p>Drop one script tag into any website. Your customers pay in AUDD — the regulated AUD stablecoin — instantly via Solana.</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="openDemoCheckout()">Try Live Demo</button>
+    <a href="#integration" class="btn-ghost">View Code</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="val">&lt;2s</div><div class="key">Finality</div></div>
+  <div class="stat"><div class="val">$0.001</div><div class="key">Tx Fee</div></div>
+  <div class="stat"><div class="val">1:1</div><div class="key">AUD Backed</div></div>
+  <div class="stat"><div class="val">AFSL</div><div class="key">Regulated</div></div>
+</div>
+
+<!-- DEMO STORE -->
+<section class="section" id="demo">
+  <div class="section-label">Live Demo</div>
+  <div class="section-title">Mock Storefront</div>
+  <div class="section-sub">Click "Buy with AUDD" on any product to see the checkout widget in action.</div>
+
+  <div class="products">
+    <div class="product-card">
+      <div class="product-img">🎧</div>
+      <div class="product-body">
+        <div class="product-name">Pro Wireless Headphones</div>
+        <div class="product-desc">Active noise cancellation, 30-hour battery, premium drivers.</div>
+        <div class="product-footer">
+          <div class="product-price">299.00 <span>AUDD</span></div>
+          <button class="buy-btn" onclick="pay(299, 'Pro Wireless Headphones')">Buy with AUDD</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">💻</div>
+      <div class="product-body">
+        <div class="product-name">Mechanical Keyboard</div>
+        <div class="product-desc">Tactile switches, RGB backlight, aluminium frame.</div>
+        <div class="product-footer">
+          <div class="product-price">189.00 <span>AUDD</span></div>
+          <button class="buy-btn" onclick="pay(189, 'Mechanical Keyboard')">Buy with AUDD</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">📱</div>
+      <div class="product-body">
+        <div class="product-name">Fast Wireless Charger</div>
+        <div class="product-desc">15W Qi2 charging pad, universal compatibility.</div>
+        <div class="product-footer">
+          <div class="product-price">49.00 <span>AUDD</span></div>
+          <button class="buy-btn" onclick="pay(49, 'Fast Wireless Charger')">Buy with AUDD</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATION CODE -->
+<section class="section" id="integration" style="background: var(--surface); max-width: 100%; padding: 80px 40px;">
+  <div style="max-width:1100px; margin:0 auto">
+    <div class="section-label">Integration</div>
+    <div class="section-title">Two Lines of Code</div>
+    <div class="section-sub">Drop it into any HTML page — no build step, no dependencies.</div>
+
+    <div class="code-grid">
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="filename">index.html</div>
+          </div>
+          <pre><span class="cm">&lt;!-- 1. Include the script --&gt;</span>
+<span class="kw">&lt;script</span> <span class="fn">src</span>=<span class="str">"audd-widget.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+
+<span class="cm">&lt;!-- 2. Add a button --&gt;</span>
+<span class="kw">&lt;button</span> <span class="fn">onclick</span>=<span class="str">"checkout()"</span><span class="kw">&gt;</span>
+  Pay with AUDD
+<span class="kw">&lt;/button&gt;</span>
+
+<span class="kw">&lt;script&gt;</span>
+  <span class="kw">function</span> <span class="fn">checkout</span>() {
+    <span class="fn">AuddWidget</span>.open({
+      merchantAddress: <span class="str">"YourSolanaWallet"</span>,
+      amount: <span class="num">49.99</span>,
+      label: <span class="str">"My Store"</span>,
+      message: <span class="str">"Order #1042"</span>,
+      onSuccess: (sig) =&gt; {
+        console.log(<span class="str">"Paid!"</span>, sig);
+      }
+    });
+  }
+<span class="kw">&lt;/script&gt;</span></pre>
+        </div>
+      </div>
+      <div>
+        <div class="code-block">
+          <div class="code-header">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <div class="filename">Node.js / TypeScript</div>
+          </div>
+          <pre><span class="kw">import</span> { <span class="fn">AuddCheckout</span> } <span class="kw">from</span> <span class="str">'audd-checkout'</span>;
+
+<span class="kw">const</span> checkout = <span class="kw">new</span> <span class="fn">AuddCheckout</span>({
+  merchantAddress: <span class="str">"YourSolanaWallet"</span>,
+  amount: <span class="num">49.99</span>,
+  label: <span class="str">"My Store"</span>,
+  message: <span class="str">"Order #1042"</span>,
+  onSuccess: (signature) =&gt; {
+    <span class="cm">// update your DB, ship the order</span>
+    console.log(<span class="str">"Payment confirmed:"</span>, signature);
+  },
+  onError: (err) =&gt; {
+    console.error(<span class="str">"Payment failed:"</span>, err);
+  }
+});
+
+<span class="cm">// Get payment URL + QR data</span>
+<span class="kw">const</span> session = checkout.<span class="fn">createSession</span>();
+console.log(session.url); <span class="cm">// solana:...</span>
+
+<span class="cm">// Start polling for confirmation</span>
+checkout.<span class="fn">startPolling</span>();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">Features</div>
+  <div class="section-title">Everything You Need</div>
+  <div class="section-sub">Production-ready from day one.</div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <h3>Instant Settlement</h3>
+      <p>Solana finalises in under 2 seconds. Funds land in your wallet immediately — no bank T+2 delays.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <h3>Regulated & Audited</h3>
+      <p>AUDD is issued under an Australian Financial Services Licence (AFSL) and is 1:1 backed by AUD held in a Bare Trust.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📱</div>
+      <h3>Solana Pay QR</h3>
+      <p>Generates a standard Solana Pay URL. Works with Phantom, Solflare, Backpack, and any compatible wallet.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🌐</div>
+      <h3>Zero Dependencies</h3>
+      <p>The browser widget is a single vanilla JS file. Drop it into any stack — React, Vue, plain HTML.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔔</div>
+      <h3>Webhook Ready</h3>
+      <p>Built-in onSuccess / onError callbacks. Plug straight into your order management system or database.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💱</div>
+      <h3>No FX Risk</h3>
+      <p>AUDD is pegged to AUD — your revenue is denominated in Australian dollars, not volatile crypto.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="max-width:700px">
+  <div class="section-label">How It Works</div>
+  <div class="section-title">Simple by Design</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Merchant embeds widget</h3>
+        <p>Include one script tag and call <code style="color:var(--accent2)">AuddWidget.open()</code> with your Solana wallet address and the amount in AUD.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Customer scans QR / taps link</h3>
+        <p>A Solana Pay QR code is generated. The customer scans it with any compatible Solana wallet — Phantom, Solflare, Backpack.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Transaction confirms on-chain</h3>
+        <p>The SDK polls the Solana network using a unique reference key. Within 2 seconds of the wallet signing, confirmation is detected.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>onSuccess fires — AUDD in your wallet</h3>
+        <p>Your callback receives the transaction signature. AUDD is in your wallet. Fulfil the order.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built with AUDD + Solana Pay &nbsp;·&nbsp;
+  <a href="https://audd.digital" target="_blank">audd.digital</a> &nbsp;·&nbsp;
+  <a href="https://solanapay.com" target="_blank">solanapay.com</a>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+  // Demo merchant wallet (replace with real wallet in production)
+  const DEMO_WALLET = '7VHUFJHWu2CuExkJcJrzhQPJ2oygupTWkL2A2For4BmE';
+
+  function pay(amount, label) {
+    AuddWidget.open({
+      merchantAddress: DEMO_WALLET,
+      amount,
+      label: 'AUDD Demo Store',
+      message: `Purchase: ${label}`,
+      onSuccess: (sig) => {
+        showToast(`Payment confirmed! Sig: ${sig.slice(0, 16)}…`);
+      },
+      onError: (err) => {
+        console.error('Payment error:', err);
+      }
+    });
+  }
+
+  function openDemoCheckout() {
+    pay(49.00, 'Demo Product');
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+</script>
+</body>
+</html>
