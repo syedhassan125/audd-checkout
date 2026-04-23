@@ -106,49 +106,26 @@
     document.head.appendChild(style);
   }
 
-  function renderQR(canvas, text, size) {
-    // Minimal QR renderer using the URL as text with a visual placeholder
-    // In production embed qrcode.js — here we show the URL clearly
-    const ctx = canvas.getContext('2d');
-    canvas.width = size;
-    canvas.height = size;
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, size, size);
+  function loadQRLib(callback) {
+    if (window.QRCode) return callback();
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+    s.onload = callback;
+    document.head.appendChild(s);
+  }
 
-    // Draw corner squares (QR finder pattern style decoration)
-    function drawFinder(x, y) {
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(x, y, 49, 49);
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(x + 7, y + 7, 35, 35);
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(x + 14, y + 14, 21, 21);
-    }
-    drawFinder(10, 10);
-    drawFinder(size - 59, 10);
-    drawFinder(10, size - 59);
-
-    // Draw data dots
-    ctx.fillStyle = '#0f172a';
-    const seed = Array.from(text).reduce((a, c) => a + c.charCodeAt(0), 0);
-    const cols = 15, cellSize = (size - 140) / cols;
-    const offsetX = 70, offsetY = 70;
-    for (let r = 0; r < cols; r++) {
-      for (let c = 0; c < cols; c++) {
-        if ((seed * (r + 1) * (c + 1) * 2654435761) % 3 !== 0) {
-          ctx.fillRect(
-            offsetX + c * cellSize, offsetY + r * cellSize,
-            cellSize - 1, cellSize - 1
-          );
-        }
-      }
-    }
-
-    // AUDD label in center
-    ctx.fillStyle = '#0ea5e9';
-    ctx.font = 'bold 13px -apple-system, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('AUDD', size / 2, size / 2 + 5);
+  function renderQR(container, text) {
+    container.innerHTML = '';
+    loadQRLib(function () {
+      new window.QRCode(container, {
+        text: text,
+        width: 220,
+        height: 220,
+        colorDark: '#0f172a',
+        colorLight: '#ffffff',
+        correctLevel: window.QRCode.CorrectLevel.M,
+      });
+    });
   }
 
   function open(config) {
@@ -180,7 +157,7 @@
           <div class="sub">≈ A$${config.amount.toFixed(2)} Australian Dollar</div>
         </div>
         <div id="audd-qr-container">
-          <canvas id="audd-qr-canvas"></canvas>
+          <div id="audd-qr-canvas"></div>
         </div>
         <div id="audd-url-box" title="Click to copy payment link">${payUrl.slice(0, 80)}…</div>
         <div id="audd-status"></div>
@@ -194,8 +171,7 @@
     requestAnimationFrame(() => overlay.classList.add('visible'));
 
     // Render QR
-    const canvas = document.getElementById('audd-qr-canvas');
-    renderQR(canvas, payUrl, 220);
+    renderQR(document.getElementById('audd-qr-canvas'), payUrl);
 
     // Copy URL on click
     document.getElementById('audd-url-box').addEventListener('click', () => {
