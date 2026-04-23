@@ -104,7 +104,9 @@ checkout.startPolling();
 
 ## Live Demo
 
-Open `demo/index.html` in your browser to see the full widget in action on a mock storefront.
+**https://syedhassan125.github.io/audd-checkout/**
+
+See the full widget in action on a mock storefront — click "Buy with AUDD" on any product.
 
 ---
 

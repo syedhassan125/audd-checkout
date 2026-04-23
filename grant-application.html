@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AUDD Grant Application — Syed Hassan</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      background: linear-gradient(135deg, #0c2340, #0f3460);
+      padding: 48px 56px 40px;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: rgba(14,165,233,0.12);
+    }
+    .header-tag {
+      display: inline-block;
+      background: rgba(14,165,233,0.2);
+      border: 1px solid rgba(14,165,233,0.4);
+      color: #7dd3fc;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 30px; font-weight: 800; line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .header h1 span { color: #38bdf8; }
+    .header p { font-size: 15px; color: #94a3b8; max-width: 500px; }
+    .header-meta {
+      display: flex; gap: 24px; margin-top: 28px;
+      font-size: 13px; color: #64748b;
+    }
+    .header-meta span { color: #e2e8f0; font-weight: 500; }
+
+    /* BODY */
+    .body { padding: 48px 56px; }
+
+    section { margin-bottom: 40px; }
+
+    .section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: #0ea5e9; margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 20px; font-weight: 800; color: #0f172a; margin-bottom: 16px;
+    }
+    p { font-size: 15px; color: #374151; margin-bottom: 12px; }
+    p:last-child { margin-bottom: 0; }
+
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: #f0f9ff; border-left: 4px solid #0ea5e9;
+      border-radius: 0 10px 10px 0; padding: 16px 20px; margin: 16px 0;
+    }
+    .highlight p { color: #0c4a6e; margin: 0; font-size: 14px; }
+
+    /* FEATURE LIST */
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: #374151;
+    }
+    .feature-list li::before {
+      content: '✓';
+      color: #0ea5e9; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* TWO COL */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+    .info-card {
+      background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 10px; padding: 16px 20px;
+    }
+    .info-card .key { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 6px; }
+    .info-card .val { font-size: 15px; font-weight: 700; color: #0f172a; }
+    .info-card .sub { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+    /* TIMELINE */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+    .tl-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid #f1f5f9;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-dot {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      background: #eff6ff; border: 1px solid #bfdbfe;
+      color: #3b82f6; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tl-body .title { font-size: 14px; font-weight: 700; color: #0f172a; }
+    .tl-body .desc { font-size: 13px; color: #64748b; margin-top: 2px; }
+
+    /* BUDGET TABLE */
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 14px; }
+    thead tr { background: #f1f5f9; }
+    th {
+      padding: 10px 14px; text-align: left;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: #64748b;
+    }
+    td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; color: #374151; }
+    tr:last-child td { border-bottom: none; font-weight: 700; color: #0f172a; background: #f8fafc; }
+    .amount-col { text-align: right; font-weight: 600; color: #0ea5e9; }
+
+    /* LINKS */
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* DIVIDER */
+    hr { border: none; border-top: 1px solid #e2e8f0; margin: 0 0 40px; }
+
+    /* FOOTER */
+    .footer {
+      background: #f8fafc; border-top: 1px solid #e2e8f0;
+      padding: 28px 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-left { font-size: 13px; color: #64748b; }
+    .footer-left strong { color: #0f172a; display: block; font-size: 15px; margin-bottom: 2px; }
+    .footer-right { font-size: 12px; color: #94a3b8; text-align: right; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .page { box-shadow: none; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-tag">AUDD Grant Application · Superteam Earn</div>
+    <h1>AUDD Checkout SDK —<br/><span>Merchant Payment Rails for Solana</span></h1>
+    <p>A drop-in widget and TypeScript SDK enabling any merchant to accept AUDD stablecoin payments via Solana Pay in minutes.</p>
+    <div class="header-meta">
+      Applicant: <span>Syed Hassan</span>
+      &nbsp;·&nbsp;
+      GitHub: <span>github.com/syedhassan125/audd-checkout</span>
+      &nbsp;·&nbsp;
+      Requesting: <span>7,500 AUDD</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- OVERVIEW -->
+    <section>
+      <div class="section-label">Overview</div>
+      <h2>What We Built</h2>
+      <p>
+        The AUDD Checkout SDK is an open-source toolkit that lets any web merchant accept AUDD payments on Solana with a single script tag and two lines of code. It handles everything from Solana Pay URL generation and QR rendering to on-chain payment detection and confirmation — with zero dependencies in the browser bundle.
+      </p>
+      <div class="highlight">
+        <p><strong>The problem it solves:</strong> AUDD is a fully regulated, 1:1 AUD-backed stablecoin with real utility — but there is no easy, copy-paste integration path for merchants. Stripe-style simplicity has not existed for AUDD. This SDK fills that gap.</p>
+      </div>
+      <p>
+        The project is live, open-source, and fully functional. The GitHub repository includes the browser widget, TypeScript SDK, and an interactive demo storefront.
+      </p>
+    </section>
+
+    <hr/>
+
+    <!-- DELIVERABLES -->
+    <section>
+      <div class="section-label">Deliverables</div>
+      <h2>What Is Already Shipped</h2>
+      <ul class="feature-list">
+        <li><strong>Browser Widget (widget.js)</strong> — Zero-dependency vanilla JS drop-in. One script tag, one function call. Renders Solana Pay QR, polls for payment, fires callbacks on confirmation or failure.</li>
+        <li><strong>TypeScript SDK (src/index.ts)</strong> — Full Node.js/TypeScript class with <code>createSession()</code>, <code>startPolling()</code>, <code>stopPolling()</code>, and <code>getStatus()</code>. Uses <code>@solana/pay</code> for reference-keyed payment detection and transfer validation.</li>
+        <li><strong>Live Demo Storefront (demo/index.html)</strong> — Three-product mock store showing the widget in a real e-commerce context with stat bar, integration code section, feature grid, and step-by-step explainer.</li>
+        <li><strong>README with full API docs</strong> — Config table, usage examples, AUDD mint address, compatible wallets, and integration guide.</li>
+        <li><strong>Correct AUDD Mint Address</strong> — Verified against official AUDD FAQ: <code>AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw</code></li>
+      </ul>
+    </section>
+
+    <hr/>
+
+    <!-- WHY IT MATTERS -->
+    <section>
+      <div class="section-label">Impact</div>
+      <h2>Why This Matters for AUDD</h2>
+      <p>
+        AUDD's own website lists merchant payments and remittance as primary use cases. Yet today, a developer who wants to accept AUDD on their site must manually construct Solana Pay URLs, handle SPL token validation, and build their own polling infrastructure. That friction kills adoption.
+      </p>
+      <p>
+        This SDK removes every step between "I want to accept AUDD" and "AUDD is in my wallet." It is the missing distribution layer — equivalent to what Stripe.js did for card payments, but for AUD on-chain.
+      </p>
+      <ul class="feature-list">
+        <li>Works with every major Solana wallet — Phantom, Solflare, Backpack</li>
+        <li>Solana settlement in under 2 seconds at ~$0.001 per transaction</li>
+        <li>Merchant receives AUDD directly — no custodian, no intermediary</li>
+        <li>Fully open-source — any developer can fork, extend, or integrate</li>
+      </ul>
+    </section>
+
+    <hr/>
+
+    <!-- TECHNICAL -->
+    <section>
+      <div class="section-label">Technical</div>
+      <h2>How It Works</h2>
+      <div class="two-col">
+        <div class="info-card">
+          <div class="key">Token</div>
+          <div class="val">AUDD</div>
+          <div class="sub">AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw</div>
+        </div>
+        <div class="info-card">
+          <div class="key">Network</div>
+          <div class="val">Solana Mainnet</div>
+          <div class="sub">~2s finality · $0.001 tx fee</div>
+        </div>
+        <div class="info-card">
+          <div class="key">Standard</div>
+          <div class="val">Solana Pay</div>
+          <div class="sub">@solana/pay · reference-keyed</div>
+        </div>
+        <div class="info-card">
+          <div class="key">Stack</div>
+          <div class="val">TypeScript + Vanilla JS</div>
+          <div class="sub">Zero browser dependencies</div>
+        </div>
+      </div>
+      <p style="margin-top:16px">
+        The SDK generates a unique <strong>reference key</strong> per payment session, encodes it into a Solana Pay URL, and polls <code>findReference()</code> to detect the transaction on-chain. Once detected, <code>validateTransfer()</code> confirms the correct recipient, AUDD token mint, and exact amount before firing the success callback.
+      </p>
+    </section>
+
+    <hr/>
+
+    <!-- GRANT USE -->
+    <section>
+      <div class="section-label">Budget</div>
+      <h2>How the Grant Will Be Used</h2>
+      <p>Requesting <strong>7,500 AUDD</strong> to extend the SDK over 6 weeks into a production-grade integration:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th>Deliverable</th>
+            <th class="amount-col">AUDD</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 — npm package</td>
+            <td>Publish <code>audd-checkout</code> to npm with semver releases</td>
+            <td class="amount-col">1,500</td>
+          </tr>
+          <tr>
+            <td>2 — React component</td>
+            <td><code>&lt;AuddCheckout /&gt;</code> React/Next.js component with hooks</td>
+            <td class="amount-col">1,500</td>
+          </tr>
+          <tr>
+            <td>3 — Webhook server</td>
+            <td>Express endpoint for server-side payment confirmation + DB integration example</td>
+            <td class="amount-col">1,500</td>
+          </tr>
+          <tr>
+            <td>4 — Hosted demo</td>
+            <td>Deploy demo storefront to Vercel with live wallet connection</td>
+            <td class="amount-col">1,000</td>
+          </tr>
+          <tr>
+            <td>5 — Docs site</td>
+            <td>Full documentation site with guides, API reference, and code playground</td>
+            <td class="amount-col">2,000</td>
+          </tr>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td></td>
+            <td class="amount-col">7,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr/>
+
+    <!-- TIMELINE -->
+    <section>
+      <div class="section-label">Roadmap</div>
+      <h2>6-Week Timeline</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">W1</div>
+          <div class="tl-body">
+            <div class="title">npm publish + React component</div>
+            <div class="desc">Package published to npm. React/Next.js hook and component released.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">W2</div>
+          <div class="tl-body">
+            <div class="title">Webhook server + Express example</div>
+            <div class="desc">Server-side confirmation endpoint with Prisma/Postgres integration example.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">W3</div>
+          <div class="tl-body">
+            <div class="title">Live demo on Vercel</div>
+            <div class="desc">Demo storefront deployed publicly with real wallet connection on Solana mainnet.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">W4</div>
+          <div class="tl-body">
+            <div class="title">Docs site live</div>
+            <div class="desc">Full documentation site with quick-start guide, config reference, and examples.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">W5-6</div>
+          <div class="tl-body">
+            <div class="title">Community outreach + first integrations</div>
+            <div class="desc">Promote to Solana developer communities. Help first merchants integrate AUDD.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr/>
+
+    <!-- ABOUT -->
+    <section>
+      <div class="section-label">About the Applicant</div>
+      <h2>Who Is Building This</h2>
+      <p>
+        I am Syed Hassan, a full-stack developer and serial hackathon builder in the Solana ecosystem. I have shipped multiple production projects on Solana including:
+      </p>
+      <ul class="feature-list">
+        <li><strong>Jupiter Sentinel</strong> — AI trading agent using 5 Jupiter APIs + Claude. Submitted to Colosseum Frontier Hackathon. (<a href="https://github.com/syedhassan125/jupiter-sentinel" target="_blank">github.com/syedhassan125/jupiter-sentinel</a>)</li>
+        <li><strong>Fractio</strong> — Fractional real estate platform on Solana. Anchor smart contract + Next.js frontend. (<a href="https://github.com/syedhassan125/fractio" target="_blank">github.com/syedhassan125/fractio</a>)</li>
+        <li><strong>Oracle Token</strong> — On-chain prediction market with 35 live markets, full bet → resolve → claim flow on Solana devnet.</li>
+        <li><strong>Hive Agents</strong> — Multi-agent AI platform (Next.js + Anthropic SDK + Neon). Deployed on Vercel.</li>
+      </ul>
+      <p style="margin-top:12px">
+        I build fast, ship working products, and document them properly. This SDK was built and pushed to GitHub in under 24 hours of identifying the opportunity.
+      </p>
+    </section>
+
+    <hr/>
+
+    <!-- LINKS -->
+    <section>
+      <div class="section-label">Links</div>
+      <h2>Project References</h2>
+      <div class="two-col">
+        <div class="info-card">
+          <div class="key">Repository</div>
+          <div class="val"><a href="https://github.com/syedhassan125/audd-checkout">github.com/syedhassan125/audd-checkout</a></div>
+        </div>
+        <div class="info-card">
+          <div class="key">Live Demo</div>
+          <div class="val"><a href="https://syedhassan125.github.io/audd-checkout/">syedhassan125.github.io/audd-checkout</a></div>
+        </div>
+        <div class="info-card">
+          <div class="key">AUDD Mint (Solana)</div>
+          <div class="val" style="font-size:12px; word-break:break-all;">AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw</div>
+        </div>
+        <div class="info-card">
+          <div class="key">Contact</div>
+          <div class="val"><a href="mailto:syedhassan112255@gmail.com">syedhassan112255@gmail.com</a></div>
+        </div>
+        <div class="info-card">
+          <div class="key">GitHub Profile</div>
+          <div class="val"><a href="https://github.com/syedhassan125">github.com/syedhassan125</a></div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-left">
+      <strong>Syed Hassan</strong>
+      Full-Stack Developer · Solana Ecosystem
+    </div>
+    <div class="footer-right">
+      AUDD Grant Application<br/>
+      Superteam Earn · April 2026
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
