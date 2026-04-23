@@ -1,0 +1,26 @@
+{
+  "name": "audd-checkout",
+  "version": "1.0.0",
+  "description": "Drop-in AUDD stablecoin checkout widget for Solana Pay",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "src/widget.js"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["audd", "solana", "stablecoin", "checkout", "solana-pay", "payments"],
+  "author": "Syed Hassan",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@solana/pay": "^0.2.6",
+    "@solana/spl-token": "^0.4.14",
+    "@solana/web3.js": "^1.98.4",
+    "bignumber.js": "^11.0.0"
+  }
+}
