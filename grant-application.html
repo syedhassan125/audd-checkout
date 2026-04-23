@@ -88,12 +88,21 @@
     /* FEATURE LIST */
     .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
     .feature-list li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 14px; color: #374151;
+      padding-left: 22px;
+      position: relative;
+      font-size: 14px; color: #374151; line-height: 1.6;
     }
     .feature-list li::before {
       content: '✓';
-      color: #0ea5e9; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+      position: absolute; left: 0; top: 0;
+      color: #0ea5e9; font-weight: 700;
+    }
+    .feature-list li code {
+      background: #f1f5f9; border: 1px solid #e2e8f0;
+      border-radius: 4px; padding: 1px 5px;
+      font-size: 12px; color: #0f172a;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      word-break: break-word;
     }
 
     /* TWO COL */
@@ -199,7 +208,7 @@
       <h2>What Is Already Shipped</h2>
       <ul class="feature-list">
         <li><strong>Browser Widget (widget.js)</strong> — Zero-dependency vanilla JS drop-in. One script tag, one function call. Renders Solana Pay QR, polls for payment, fires callbacks on confirmation or failure.</li>
-        <li><strong>TypeScript SDK (src/index.ts)</strong> — Full Node.js/TypeScript class with <code>createSession()</code>, <code>startPolling()</code>, <code>stopPolling()</code>, and <code>getStatus()</code>. Uses <code>@solana/pay</code> for reference-keyed payment detection and transfer validation.</li>
+        <li><strong>TypeScript SDK (src/index.ts)</strong> — Full Node.js/TypeScript class with session creation, on-chain polling, and transfer validation via <code>@solana/pay</code>. Publishable as an npm package.</li>
         <li><strong>Live Demo Storefront (demo/index.html)</strong> — Three-product mock store showing the widget in a real e-commerce context with stat bar, integration code section, feature grid, and step-by-step explainer.</li>
         <li><strong>README with full API docs</strong> — Config table, usage examples, AUDD mint address, compatible wallets, and integration guide.</li>
         <li><strong>Correct AUDD Mint Address</strong> — Verified against official AUDD FAQ: <code>AUDDttiEpCydTm7joUMbYddm72jAWXZnCpPZtDoxqBSw</code></li>
